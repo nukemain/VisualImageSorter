@@ -9,15 +9,28 @@ import java.io.IOException;
 
 
 public class GUI {
-    static JLabel label = new JLabel();
+    static JLabel MainWindowMainLabel = new JLabel();
     static JFrame frame = new JFrame();
-    static JPanel BottomButtonpanel = new JPanel();
+    static JPanel MainWindowMainButtonPanel = new JPanel();
+
+    /*
+    public static void StartupWindow() {
+    JPanel StartupWindowMainPanel = new JPanel();
+        StartupWindowMainPanel.setLayout(new GridLayout(4,1));
+        JLabel StartupTopLabel = new JLabel("<br>Welcome To Visual Image Sorter</br>Use the panel below");
+        JPanel secondlinepanel = new JPanel();
+
+        frame.add(StartupWindowMainPanel);
+        frame.setSize(400, 400);
+        frame.pack();
+        frame.setVisible(true);
+    }*/
 
     public static void mainWindow() {
-        // Load the image
+
         ImageIcon image = resizeImg(Main.ImageList.get(0).getAbsolutePath(),800,600);
-        label.setSize(image.getIconWidth(),image.getIconHeight());
-        frame.add(label);
+        MainWindowMainLabel.setSize(image.getIconWidth(),image.getIconHeight());
+        frame.add(MainWindowMainLabel);
 
         JButton ButtonSkip = new JButton("Skip Image");
 
@@ -52,34 +65,65 @@ public class GUI {
                 serveNextImg();
             }
         });
+        GridLayout TopButtonGrid = new GridLayout(1,3);
+        JPanel TopButtonPanel = new JPanel();
+        TopButtonPanel.setLayout(TopButtonGrid);
+        TopButtonPanel.add(ButtonDelete);
+        TopButtonPanel.add(ButtonSkip);
+        TopButtonPanel.add(ButtonKeep);
 
-        // Set the size of the JFrame
+        if(Main.CategoryList.size()>2){
+            MainWindowMainButtonPanel.setLayout(new GridLayout(2,1));
+        }else{
+            MainWindowMainButtonPanel.setLayout(new GridLayout(1,1));
+        }
+        MainWindowMainButtonPanel.add(TopButtonPanel);
+
+        if((Main.CategoryList.size()-2)>0) {
+            GridLayout BottomButtonGrid = new GridLayout(1,Main.CategoryList.size()-2);
+            JPanel BottomButtonPanel = new JPanel();
+            BottomButtonPanel.setLayout(BottomButtonGrid);
+            System.out.println("popoga");
+            for (int i = 0; (i < Main.CategoryList.size() - 2); i++) {
+                JButton CategoryButton = new JButton(Main.CategoryList.get(i+2));
+                String name = Main.CategoryList.get(i+2);
+                int finalI = i+2;
+                CategoryButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        Main.MoveImage(String.valueOf(Main.ImageList.get(Main.ImageIndex-1)),Main.CategoryList.get(finalI));
+                        System.out.println(Main.CategoryList.get(finalI));
+                        serveNextImg();
+                    }
+                });
+                BottomButtonPanel.add(CategoryButton);
+            }
+            MainWindowMainButtonPanel.add(BottomButtonPanel);
+        }
+
         frame.setSize(1000, 800);
-
-        // Create a JLabel and set the image
         serveNextImg();
 
-        frame.add(label, BorderLayout.CENTER);
-        GridLayout ButtonGrid = new GridLayout(1,3);
-        BottomButtonpanel.setLayout(ButtonGrid);
-        BottomButtonpanel.add(ButtonDelete);
-        BottomButtonpanel.add(ButtonSkip);
-        BottomButtonpanel.add(ButtonKeep);
-        frame.add(BottomButtonpanel, BorderLayout.SOUTH);
+        frame.add(MainWindowMainLabel, BorderLayout.CENTER);
+
+
+        frame.add(MainWindowMainButtonPanel, BorderLayout.SOUTH);
 
         // Set the default close operation
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Make the frame visible
+        frame.pack();
         frame.setVisible(true);
 
     }
-    public static  void test(){
+
+    public static void test(){
         try {
             BufferedImage image = ImageIO.read(new File("C:\\Users\\Sowap\\Desktop\\testujemy\\00359d6c-4552-4f1f-a91a-3f3476bf4de6.jpg"));
             System.out.println(image.getHeight());
             ImageIcon icon = new ImageIcon(image.getScaledInstance(800,600,Image.SCALE_SMOOTH));
-            label.setIcon(icon);
+            MainWindowMainLabel.setIcon(icon);
 
         } catch (NullPointerException e) {
             System.out.println("fucked up image big dawg");
@@ -89,16 +133,17 @@ public class GUI {
         }
 
     }
-    public static void serveNextImg() {
-        CheckIfImageIsValid(Main.ImageList.get(Main.ImageIndex).getAbsolutePath());
 
-        ImageIcon nextImage = resizeImg(Main.ImageList.get(Main.ImageIndex).getAbsolutePath(), label.getWidth(), label.getHeight());
+    public static void serveNextImg() {
+        CheckIfNextImageIsValid();
+
+        ImageIcon nextImage = resizeImg(Main.ImageList.get(Main.ImageIndex).getAbsolutePath(), MainWindowMainLabel.getWidth(), MainWindowMainLabel.getHeight());
         System.out.println(Main.ImageList.get(Main.ImageIndex).getAbsolutePath());
-        label.setIcon(nextImage);
+        MainWindowMainLabel.setIcon(nextImage);
         Main.ImageIndex++;
 
     }
-    public static void CheckIfImageIsValid(String imagePath) {
+    public static void CheckIfNextImageIsValid() {
         while(true) {
             try {
                 BufferedImage image = ImageIO.read(new File(Main.ImageList.get(Main.ImageIndex).getAbsolutePath()));

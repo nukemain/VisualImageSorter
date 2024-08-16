@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
     static List<File> ImageList = new ArrayList<>();
@@ -21,9 +22,18 @@ public class Main {
         PrepareFiles(MainDirectory);
         GUI.mainWindow();
     }
+    /*
+    public static void PrepareCategories() {
+        File dataFile = fileChooser.getSelectedFile();
+        Scanner dataReader = new Scanner(dataFile);
+        //part of code that reads the size of the map and number of NPCs from the file
+        if (dataReader.hasNextLine()) {
+            dataString = dataReader.nextLine();
+        }
+    }*/
 
     public static void PrepareFolders(String dir){
-        for(int i = 0; i< CategoryList.size(); i++){
+        for(int i = 0; i<CategoryList.size(); i++){
             String folderPath = dir+"\\"+ CategoryList.get(i);
             File folder = new File(folderPath);
             if (!folder.exists() || (!folder.exists() && !folder.isDirectory())) {
@@ -51,20 +61,6 @@ public class Main {
                     }
                 }
             }
-            /*
-            //separate loop to add .jpg files after the .png for reasons im not going to explain here
-            //(if you really need to know, ask me directly)
-
-            //currently not needed
-            for (int i = 0; i < listOfFiles.length; i++) {
-                if (listOfFiles[i].isFile()) {
-                    if (listOfFiles[i].getName().endsWith(".jpg") || listOfFiles[i].getName().endsWith(".JPG")) {
-                        ImageList.add(listOfFiles[i]);
-                    }
-                }
-            }
-
-             */
         }
     }
 
