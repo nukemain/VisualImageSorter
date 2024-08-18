@@ -18,9 +18,14 @@ public class Main {
     public static void main(String[] args) {
         CategoryList.add("ForDeletion");
         CategoryList.add("Kept");
-        PrepareFolders(MainDirectory);
         PrepareFiles(MainDirectory);
-        GUI.mainWindow();
+        if(ImageList.isEmpty()){
+            JOptionPane.showMessageDialog(null, "No images found in this directory! Did you run the program in the right directory? Are your images file formats supported by the program?", "Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }else {
+            PrepareFolders(MainDirectory);
+            GUI.mainWindow();
+        }
     }
     /*
     public static void PrepareCategories() {

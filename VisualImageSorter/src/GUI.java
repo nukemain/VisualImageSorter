@@ -12,6 +12,7 @@ public class GUI {
     static JLabel MainWindowMainLabel = new JLabel();
     static JFrame frame = new JFrame();
     static JPanel MainWindowMainButtonPanel = new JPanel();
+    static JLabel MainWindowTextLabel = new JLabel();
 
     /*
     public static void StartupWindow() {
@@ -102,17 +103,28 @@ public class GUI {
         }
 
         frame.setSize(1000, 800);
-        serveNextImg();
+        //serveNextImg();
+        MainWindowMainLabel.setSize(frame.getWidth(),1);
+        MainWindowTextLabel.setText("<html>How to use:" +
+                "<br>Click\"Delete image\" button to move it to a folder named \"ForDeletion\" in the programs active directory." +
+                "<br>Click\"Skip image\" button to skip to the next image." +
+                "<br>Click\"Keep image\" button to move it to a folder named \"Kept\" in the programs active directory." +
+                "<br>"+
+                "<br>Custom sorting options:" +
+                "<br>Add (or remove added) sorting options in the \"SorterCategories.txt\" file by writing category names, each in a new line (changes will apply after program restart)." +
+                "<br>Adding a category will create a corresponding button and directory in programs active directory." +
+                "<br>"+
+                "<br>Resize the window to your liking and click \"Skip image\" to continue.</br></html>");
 
+        frame.add(MainWindowTextLabel,BorderLayout.NORTH);
+
+        frame.setTitle("Visual Image Sorter");
         frame.add(MainWindowMainLabel, BorderLayout.CENTER);
 
 
         frame.add(MainWindowMainButtonPanel, BorderLayout.SOUTH);
 
-        // Set the default close operation
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // Make the frame visible
         frame.pack();
         frame.setVisible(true);
 
@@ -136,10 +148,10 @@ public class GUI {
 
     public static void serveNextImg() {
         CheckIfNextImageIsValid();
-
         ImageIcon nextImage = resizeImg(Main.ImageList.get(Main.ImageIndex).getAbsolutePath(), MainWindowMainLabel.getWidth(), MainWindowMainLabel.getHeight());
         System.out.println(Main.ImageList.get(Main.ImageIndex).getAbsolutePath());
         MainWindowMainLabel.setIcon(nextImage);
+        MainWindowTextLabel.setText(Main.ImageIndex+"/"+Main.ImageList.size()+" "+Main.ImageList.get(Main.ImageIndex).getAbsolutePath());
         Main.ImageIndex++;
 
     }
@@ -161,6 +173,9 @@ public class GUI {
     }
     public static ImageIcon resizeImg(String img, int width, int height) {
         ImageIcon OG = new ImageIcon(img);
+        if(height==0){
+            height=OG.getIconHeight();
+        }
         Image newImg = OG.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
         return new ImageIcon(newImg);
     }
