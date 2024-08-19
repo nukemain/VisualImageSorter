@@ -14,18 +14,6 @@ public class GUI {
     static JLabel MainWindowTextLabel = new JLabel();
     private static Timer resizeTimer;
 
-    /*
-    public static void StartupWindow() {
-    JPanel StartupWindowMainPanel = new JPanel();
-        StartupWindowMainPanel.setLayout(new GridLayout(4,1));
-        JLabel StartupTopLabel = new JLabel("<br>Welcome To Visual Image Sorter</br>Use the panel below");
-        JPanel secondlinepanel = new JPanel();
-
-        frame.add(StartupWindowMainPanel);
-        frame.setSize(400, 400);
-        frame.pack();
-        frame.setVisible(true);
-    }*/
 
     public static void mainWindow() {
 
@@ -141,12 +129,6 @@ public class GUI {
 
         frame.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent componentEvent) {
-                /*
-                if(!(Main.ImageIndex==0)){
-                    System.out.println("wowza");
-                    ImageIcon RefreshedImage = resizeImg(Main.ImageList.get(Main.ImageIndex-1).getAbsolutePath(), MainWindowMainLabel.getWidth(), MainWindowMainLabel.getHeight());
-                    MainWindowMainLabel.setIcon(RefreshedImage);
-                }*/
                 if (!(Main.ImageIndex == 0)) {
                     if (resizeTimer == null) {
                         resizeTimer = new Timer(250, new ActionListener() {

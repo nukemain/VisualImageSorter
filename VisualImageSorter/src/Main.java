@@ -1,11 +1,5 @@
 import javax.swing.*;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -17,6 +11,8 @@ public class Main {
     static Integer ImageIndex = 0;
 
     public static void main(String[] args) {
+        System.out.println(System.getProperty("user.dir"));
+        MainDirectory = System.getProperty("user.dir");
         CategoryList.add("ForDeletion");
         CategoryList.add("Kept");
         PrepareCategories(MainDirectory);
