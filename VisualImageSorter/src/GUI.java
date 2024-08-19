@@ -26,8 +26,6 @@ public class GUI {
         ButtonSkip.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("skipped");
-                //test();
                 serveNextImg();
             }
         });
@@ -38,7 +36,6 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Main.MoveImage(String.valueOf(Main.ImageList.get(Main.ImageIndex-1)),Main.CategoryList.get(0));
-                System.out.println("del");
                 serveNextImg();
             }
         });
@@ -50,7 +47,6 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Main.MoveImage(String.valueOf(Main.ImageList.get(Main.ImageIndex-1)),Main.CategoryList.get(1));
-                System.out.println("kept");
                 serveNextImg();
             }
         });
@@ -80,7 +76,7 @@ public class GUI {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         Main.MoveImage(String.valueOf(Main.ImageList.get(Main.ImageIndex-1)),Main.CategoryList.get(finalI));
-                        System.out.println(Main.CategoryList.get(finalI));
+                        //System.out.println(Main.CategoryList.get(finalI));
                         serveNextImg();
                     }
                 });
@@ -92,38 +88,33 @@ public class GUI {
         frame.addKeyListener(new KeyListener() {
             @Override
             public void keyPressed(KeyEvent e) {
-                // Check which key is pressed
-                System.out.println("Key pressed code=" + e.getKeyCode() + ", char=" + e.getKeyChar());
+                //System.out.println("Key pressed code=" + e.getKeyCode() + ", char=" + e.getKeyChar());
                 int keyCode = e.getKeyCode();
 
                 if (keyCode == KeyEvent.VK_RIGHT) {
                     Main.MoveImage(String.valueOf(Main.ImageList.get(Main.ImageIndex-1)),Main.CategoryList.get(0));
-                    System.out.println("del by keybind");
+                    //System.out.println("del by keybind");
                     serveNextImg();
 
                 }else if (keyCode == KeyEvent.VK_LEFT) {
                     Main.MoveImage(String.valueOf(Main.ImageList.get(Main.ImageIndex-1)),Main.CategoryList.get(1));
-                    System.out.println("kept by keybind");
+                    //System.out.println("kept by keybind");
                     serveNextImg();
 
                 }else if (keyCode == KeyEvent.VK_DOWN) {
-                    System.out.println("skipped by keybind");
+                    //System.out.println("skipped by keybind");
                     serveNextImg();
-                }else if (keyCode == KeyEvent.VK_A) {
-                    System.out.println("okejjjjjjjj");
                 }
-
-
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                // Not used
+                //unused
             }
 
             @Override
             public void keyTyped(KeyEvent e) {
-                // Not used
+                //unused
             }
         });
 
@@ -160,6 +151,8 @@ public class GUI {
                 "<br>Add (or remove added) sorting options in the \"SorterCategories.txt\" file by writing category names, each in a new line (changes will apply after program restart)." +
                 "<br>Adding a category will create a corresponding button and directory in programs active directory." +
                 "<br>"+
+                "<br>Note that for unknown to me reasons, some immages cannot be displayed in the program. Those images are filtered out during programs use. Sorry about that :( ."+
+                "<br>"+
                 "<br>Resize the window to your liking and click \"Skip image\" to continue.</br></html>");
 
         frame.add(MainWindowTextLabel,BorderLayout.NORTH);
@@ -177,21 +170,6 @@ public class GUI {
 
     }
 
-    public static void test(){
-        try {
-            BufferedImage image = ImageIO.read(new File("C:\\Users\\Sowap\\Desktop\\testujemy\\00359d6c-4552-4f1f-a91a-3f3476bf4de6.jpg"));
-            System.out.println(image.getHeight());
-            ImageIcon icon = new ImageIcon(image.getScaledInstance(800,600,Image.SCALE_SMOOTH));
-            MainWindowMainLabel.setIcon(icon);
-
-        } catch (NullPointerException e) {
-            System.out.println("fucked up image big dawg");
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
 
     public static void serveNextImg() {
         if(Main.ImageList.size()==(Main.ImageIndex-1)){
@@ -200,7 +178,7 @@ public class GUI {
         }else{
             CheckIfNextImageIsValid();
             ImageIcon nextImage = resizeImg(Main.ImageList.get(Main.ImageIndex).getAbsolutePath(), MainWindowMainLabel.getWidth(), MainWindowMainLabel.getHeight());
-            System.out.println(Main.ImageList.get(Main.ImageIndex).getAbsolutePath());
+            //System.out.println(Main.ImageList.get(Main.ImageIndex).getAbsolutePath());
 
             MainWindowMainLabel.setIcon(nextImage);
             MainWindowTextLabel.setText(Main.ImageIndex + "/" + Main.ImageList.size() + " " + Main.ImageList.get(Main.ImageIndex).getAbsolutePath());
@@ -212,16 +190,19 @@ public class GUI {
     }
     public static void CheckIfNextImageIsValid() {
         while(true) {
+            if(Main.ImageList.size()<=(Main.ImageIndex)){
+                JOptionPane.showMessageDialog(null, "<html>All images Sorted !<br>(No more suitable images found in this directory!)<html>", "Done!", JOptionPane.INFORMATION_MESSAGE);
+                System.exit(0);
+            }
             try {
                 BufferedImage image = ImageIO.read(new File(Main.ImageList.get(Main.ImageIndex).getAbsolutePath()));
-                //BufferedImage image = ImageIO.read(new File("C:\\Users\\Sowap\\Desktop\\testujemy\\00359d6c-4552-4f1f-a91a-3f3476bf4de6.jpg"));
                 System.out.println(image.getHeight());
                 break;
 
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } catch (NullPointerException e) {
-                System.out.println("fucked up image big dawg");
+                //System.out.println("fucked up image big dawg");
                 Main.ImageIndex++;
             }
         }
