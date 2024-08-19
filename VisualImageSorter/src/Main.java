@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,6 +19,7 @@ public class Main {
     public static void main(String[] args) {
         CategoryList.add("ForDeletion");
         CategoryList.add("Kept");
+        PrepareCategories(MainDirectory);
         PrepareFiles(MainDirectory);
         if(ImageList.isEmpty()){
             JOptionPane.showMessageDialog(null, "No images found in this directory! Did you run the program in the right directory? Are your images file formats supported by the program?", "Error", JOptionPane.ERROR_MESSAGE);
@@ -27,15 +29,29 @@ public class Main {
             GUI.mainWindow();
         }
     }
-    /*
-    public static void PrepareCategories() {
-        File dataFile = fileChooser.getSelectedFile();
-        Scanner dataReader = new Scanner(dataFile);
-        //part of code that reads the size of the map and number of NPCs from the file
-        if (dataReader.hasNextLine()) {
-            dataString = dataReader.nextLine();
+
+    public static void PrepareCategories(String dir){
+        try {
+            File dataFile = new File(dir + "\\SorterCategories.txt");
+            if(!dataFile.exists()){
+                dataFile.createNewFile();
+            }
+            Scanner dataReader = new Scanner(dataFile);
+
+            while (dataReader.hasNextLine()) {
+                String dataString = dataReader.nextLine();
+                if (dataString.contains("\\")||dataString.contains("/")||dataString.contains(":")||dataString.contains("*")||dataString.contains("\"")||dataString.contains("<")||dataString.contains(">")||dataString.contains("|")) {
+                    JOptionPane.showMessageDialog(null, dataString + " contains an incompatible chracter ( \\ / \" * < > | ). Please remove it.", "Error", JOptionPane.ERROR_MESSAGE);
+                    System.exit(0);
+                }else{
+                    CategoryList.add(dataString);
+                }
+            }
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, "Error reading SorterCategories.txt .", "Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
         }
-    }*/
+    }
 
     public static void PrepareFolders(String dir){
         for(int i = 0; i<CategoryList.size(); i++){
