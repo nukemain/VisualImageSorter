@@ -92,12 +92,12 @@ public class GUI {
                 int keyCode = e.getKeyCode();
 
                 if (keyCode == KeyEvent.VK_RIGHT) {
-                    Main.MoveImage(String.valueOf(Main.ImageList.get(Main.ImageIndex-1)),Main.CategoryList.get(0));
+                    Main.MoveImage(String.valueOf(Main.ImageList.get(Main.ImageIndex-1)),Main.CategoryList.get(1));
                     //System.out.println("del by keybind");
                     serveNextImg();
 
                 }else if (keyCode == KeyEvent.VK_LEFT) {
-                    Main.MoveImage(String.valueOf(Main.ImageList.get(Main.ImageIndex-1)),Main.CategoryList.get(1));
+                    Main.MoveImage(String.valueOf(Main.ImageList.get(Main.ImageIndex-1)),Main.CategoryList.get(0));
                     //System.out.println("kept by keybind");
                     serveNextImg();
 
